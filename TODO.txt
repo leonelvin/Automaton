@@ -9,4 +9,5 @@ date with destiny adjustments
     - fate whitelist/blacklist
 
 address book: move to lifestream
+adjust retainer: remove
 g2a/achievement tracker: move to their own plugins

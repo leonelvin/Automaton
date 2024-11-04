@@ -31,7 +31,7 @@ public class DebugToolsConfiguration
 public class DebugTools : Tweak<DebugToolsConfiguration>
 {
     public override string Name => "Debug Tools";
-    public override string Description => "Debug tools for use in hyperborea/firewall";
+    public override string Description => "Debug tools for use in hyperborea";
 
     public override void Enable()
     {
