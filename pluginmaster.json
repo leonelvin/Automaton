@@ -1,0 +1,23 @@
+[
+  {
+    "Author": "croizat",
+    "Name": "Automaton",
+    "Punchline": "Extra illegal",
+    "Description": "Collection of tweaks that either do not fit in the main plugin or are being tested here.",
+    "Tags": [
+      "automation",
+      "plugin"
+    ],
+    "InternalName": "Automaton",
+    "RepoUrl": "https://github.com/leonelvin/Automaton",
+    "DownloadCount": 82261,
+    "LastUpdate": 1730113150948,
+    "DownloadLinkInstall": "https://github.com/leonelvin/Automaton/archive/refs/tags/v69.42.zip",
+    "DownloadLinkUpdate": "https://github.com/leonelvin/Automaton/archive/refs/tags/v69.42.zip",
+    "AssemblyVersion": "69.42",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": "10",
+    "Changelog": "",
+    "IconUrl": "https://s3.puni.sh/media/plugin/34/icon-z405dwrdjem.png"
+  }
+]
