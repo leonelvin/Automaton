@@ -32,6 +32,9 @@ public class CommandsConfiguration
 
     [BoolConfig(Label = "/item")]
     public bool EnableUseItem = false;
+
+    [BoolConfig(Label = "/directreturn")]
+    public bool EnableDirectReturn = false;
 }
 
 [Tweak]
@@ -157,6 +160,16 @@ public partial class Commands : Tweak<CommandsConfiguration>
         if (agent == null) return;
 
         agent->UseAction(itemId >= 2_000_000 ? ActionType.KeyItem : ActionType.Item, itemId, extraParam: 65535);
+    }
+    #endregion
+
+    #region Direct Return
+    [CommandHandler("/directreturn", "Calls the return function directly. Use this over the bypass if the other didn't work for you.", nameof(Config.EnableDirectReturn))]
+    internal unsafe void OnCommandDirectReturn(string command, string arguments)
+    {
+        var agent = ActionManager.Instance();
+        if (agent == null) return;
+        agent->UseActionLocation(ActionType.GeneralAction, 8);
     }
     #endregion
 }

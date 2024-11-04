@@ -1,10 +1,10 @@
 ﻿namespace Automaton.Features;
 
-[Tweak(debug: true)]
+[Tweak]
 public unsafe class InstantReturn : Tweak
 {
-    public override string Name => "Quick Return";
-    public override string Description => "Calls the return function directly";
+    public override string Name => "Return Bypass";
+    public override string Description => "Bypass return cast time and cool down. If this does not work for you please enable /directreturn in Commands instead.";
 
     public override void Enable()
     {

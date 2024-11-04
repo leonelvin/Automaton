@@ -19,7 +19,6 @@ public class AddressBookDebug : Tweak<AddresBookDebugConfiguration>
     private string _name = string.Empty;
     public override void DrawConfig()
     {
-        if (!Player.Available || Player.InPvP) return;
         if (ImGui.InputText($"##NewLocation", ref _name, 50, ImGuiInputTextFlags.EnterReturnsTrue))
             Config.Locations.Add((_name, Player.Territory, Player.Position));
         ImGuiX.DrawSection("Locations in Zone");

@@ -1,13 +1,13 @@
-relay helper: minion support, prevent double relaying
+Better targeting that works in pvp
+    - ability to preview which target is next/prev
+auto hide helmet during cutscene
+relay helper: minion support
 Some sort of go to npc command that incorporates itemvendorlocation/lifestream/navmesh
 /tplast command to teleport to the last linked loc
+Enhanced login/logout, ability to do commands when those are triggered
 
 date with destiny adjustments
     - zone whitelist/blacklist
     - auto zone change
     - support for the achievements
     - fate whitelist/blacklist
-
-address book: move to lifestream
-adjust retainer: remove
-g2a/achievement tracker: move to their own plugins

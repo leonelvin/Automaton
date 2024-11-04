@@ -43,7 +43,6 @@ public static unsafe class Player
     public static TerritoryIntendedUseEnum TerritoryIntendedUse => (TerritoryIntendedUseEnum)GetRow<TerritoryType>(Territory).TerritoryIntendedUse;
     public static bool InDuty => GameMain.Instance()->CurrentContentFinderConditionId != 0;
     public static bool HasPenalty => FFXIVClientStructs.FFXIV.Client.Game.UI.InstanceContent.Instance()->GetPenaltyRemainingInMinutes(0) > 0;
-    public static bool InPvP => GameMain.IsInPvPInstance();
     public static Vector3 Position { get => Object.Position; set => GameObject->SetPosition(value.X, value.Y, value.Z); }
     public static float Speed { get => Controller->MoveControllerWalk.BaseMovementSpeed; set => Debug.SetSpeed(6 * value); }
     public static bool IsMoving => AgentMap.Instance()->IsPlayerMoving == 1;

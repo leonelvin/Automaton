@@ -1,4 +1,5 @@
-﻿using Automaton.UI;
+﻿using Automaton.IPC;
+using Automaton.UI;
 using Dalamud.Game.ClientState.Keys;
 using Dalamud.Game.Gui.Toast;
 using ECommons;
@@ -8,6 +9,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using ImGuiNET;
+using Lumina.Excel.GeneratedSheets2;
 
 namespace Automaton.Features;
 
@@ -25,26 +27,27 @@ public class DebugToolsConfiguration
     [BoolConfig] public bool EnableTPMarker = false;
     [BoolConfig] public bool EnableTPOffset = false;
     [BoolConfig] public bool EnableTPAbsolute = false;
+
+    [BoolConfig] public bool DisableKnockback = false;
+    [BoolConfig] public bool DisableBewitched = false;
 }
 
 [Tweak(true)]
 public class DebugTools : Tweak<DebugToolsConfiguration>
 {
     public override string Name => "Debug Tools";
-    public override string Description => "Debug tools for use in hyperborea";
+    public override string Description => "Tools de Debug";
 
     public override void Enable()
     {
         Svc.Framework.Update += OnUpdate;
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "MJICraftSchedule", OnSetup);
-        Events.EnteredPvPInstance += OnEnterPvP;
     }
 
     public override void Disable()
     {
         Svc.Framework.Update -= OnUpdate;
         Svc.AddonLifecycle.UnregisterListener(OnSetup);
-        Events.EnteredPvPInstance -= OnEnterPvP;
     }
 
     private unsafe void OnSetup(AddonEvent type, AddonArgs args)
@@ -65,28 +68,33 @@ public class DebugTools : Tweak<DebugToolsConfiguration>
         Svc.Toasts.ShowNormal($"TPClick {(tpActive ? "Enabled" : "Disabled")}", new ToastOptions() { Speed = ToastSpeed.Fast });
     }
 
+    //private static readonly string CollisionSig = "E8 ?? ?? ?? ?? 48 8B 47 20 0F 57";
+    //private static nint CollisionAddr;
     [CommandHandler("/noclip", "Enable NoClip", nameof(Config.EnableNoClip))]
     private void OnNoClip(string command, string arguments)
     {
-        if (Player.InPvP) return;
         ncActive ^= true;
         Config.NoClipSpeed = float.TryParse(arguments, out var speed) ? speed : Config.NoClipSpeed;
+        //try
+        //{
+        //    if (CollisionAddr != IntPtr.Zero && !Config.EnableNoClip)
+        //    {
+        //        Config.EnableNoClip = true;
+        //        Svc.Log.Debug("Disabling Collision");
+        //        SafeMemory.WriteBytes(CollisionAddr, [144, 144, 144, 144, 144]);
+        //    }
+        //    if (CollisionAddr != IntPtr.Zero && Config.EnableNoClip)
+        //    {
+        //        Config.EnableNoClip = false;
+        //        Svc.Log.Debug("Enabling Collision");
+        //        SafeMemory.WriteBytes(CollisionAddr, [232, 114, 4, 0, 0]);
+        //    }
+        //}
+        //catch (Exception e) { e.Log(); }
     }
 
     [CommandHandler(["/move", "/speed"], "Modify your movement speed", nameof(Config.EnableMoveSpeed))]
-    private void OnMoveSpeed(string command, string arguments)
-    {
-        if (Player.InPvP) return;
-        Player.Speed = float.TryParse(arguments, out var speed) ? speed : 1.0f;
-    }
-
-    // prevent entering pvp with debug options enabled
-    private void OnEnterPvP()
-    {
-        Player.Speed = 1.0f;
-        tpActive = false;
-        ncActive = false;
-    }
+    private void OnMoveSpeed(string command, string arguments) => Player.Speed = float.TryParse(arguments, out var speed) ? speed : 1.0f;
 
     public static bool ShowMouseOverlay;
     private bool IsLButtonPressed;
@@ -158,7 +166,6 @@ public class DebugTools : Tweak<DebugToolsConfiguration>
     [CommandHandler("/ada", "Call actions directly.", nameof(Config.EnableDirectActions))]
     private unsafe void OnDirectAction(string command, string arguments)
     {
-        if (Player.InPvP) return;
         try
         {
             var args = arguments.Split(' ');
@@ -184,7 +191,6 @@ public class DebugTools : Tweak<DebugToolsConfiguration>
     [CommandHandler("/tpmarker", "Teleport to a given marker", nameof(Config.EnableTPMarker))]
     private unsafe void OnTeleportMarker(string command, string arguments)
     {
-        if (Player.InPvP) return;
         if (int.TryParse(arguments, out var i))
         {
             var m = MarkingController.Instance()->FieldMarkers[i];
@@ -197,7 +203,6 @@ public class DebugTools : Tweak<DebugToolsConfiguration>
     [CommandHandler("/tpoff", "Teleport from your current position, offset by arguments", nameof(Config.EnableTPOffset))]
     private unsafe void OnTeleportOffset(string command, string arguments)
     {
-        if (Player.InPvP) return;
         if (arguments.TryParseVector3(out var v))
             Player.Position += v;
     }
@@ -205,8 +210,31 @@ public class DebugTools : Tweak<DebugToolsConfiguration>
     [CommandHandler("/tpabs", "Teleport to a given absolute position", nameof(Config.EnableTPAbsolute))]
     private unsafe void OnTeleportAbsolute(string command, string arguments)
     {
-        if (Player.InPvP) return;
         if (arguments.TryParseVector3(out var v))
             Player.Position = v;
+    }
+
+    private bool noKb;
+    [CommandHandler("/tkb", "Toggle knockback immunity", nameof(Config.EnableNoClip))]
+    private void OnToggleKnockback(string command, string arguments)
+    {
+        noKb ^= true;
+        if (noKb)
+            P.Memory.KBProcHook?.Enable();
+        else
+            P.Memory.KBProcHook?.Disable();
+        Svc.Toasts.ShowNormal($"Knockback Immunity {(noKb ? "Enabled" : "Disabled")}");
+    }
+
+    private bool noBewitch;
+    [CommandHandler("/tbw", "Toggle bewitching immunity", nameof(Config.DisableBewitched))]
+    private void OnToggleBewitch(string command, string arguments)
+    {
+        noBewitch ^= true;
+        if (noBewitch)
+            P.Memory.BewitchHook?.Enable();
+        else
+            P.Memory.BewitchHook?.Disable();
+        Svc.Toasts.ShowNormal($"Bewitch Immunity {(noBewitch ? "Enabled" : "Disabled")}");
     }
 }

@@ -23,6 +23,7 @@ public class TweakConfigs
     public AddresBookConfiguration AddresBook { get; init; } = new();
     public AddresBookDebugConfiguration AddresBookDebug { get; init; } = new();
     public ARTurnInConfiguration ARTurnIn { get; init; } = new();
+    //public ARxMBConfiguration ARxMB { get; init; } = new();
     public AutoFollowConfiguration AutoFollow { get; init; } = new();
     public AutoSelectGardeningConfiguration AutoSelectGardening { get; init; } = new();
     public ClickToMoveConfiguration ClickToMove { get; init; } = new();
@@ -31,9 +32,12 @@ public class TweakConfigs
     public DebugToolsConfiguration DebugTools { get; init; } = new();
     public EnhancedDutyStartEndConfiguration EnhancedDutyStartEnd { get; init; } = new();
     public EnhancedLoginLogoutConfig EnhancedLoginLogout { get; init; } = new();
+    public EnhancedTargetingConfiguration EnhancedTargeting { get; init; } = new();
+    public FcChestTabRenameConfiguration FCChestTabRename { get; init; } = new();
     public GettingTooAttachedConfiguration GettingTooAttached { get; init; } = new();
     public GMAlertConfiguration GMAlert { get; init; } = new();
     public HuntRelayHelperConfiguration HuntRelayHelper { get; init; } = new();
+    public MarketAdjusterConfiguration MarketAdjuster { get; init; } = new();
     public SimpleCurrencyAlertConfig SimpleCurrencyAlertConfig { get; init; } = new();
 }
 

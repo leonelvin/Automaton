@@ -23,7 +23,6 @@ internal class DebugWindow : Window
 
     public override unsafe void Draw()
     {
-        if (!Player.Available) return;
         for (var i = 0; i < RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Count; i++)
         {
             var atk = RaptureAtkUnitManager.Instance()->AllLoadedUnitsList.Entries[i].Value;

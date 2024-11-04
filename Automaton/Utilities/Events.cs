@@ -20,7 +20,4 @@ public class Events
 
     public static event Action<List<IMarketBoardItemListing>>? ListingsEnd;
     public static void OnListingsEnd(List<IMarketBoardItemListing> listings) => ListingsEnd?.Invoke(listings);
-
-    public static event Action? EnteredPvPInstance;
-    public static void OnEnteredPvPInstance() => EnteredPvPInstance?.Invoke();
 }

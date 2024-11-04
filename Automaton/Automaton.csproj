@@ -55,6 +55,7 @@
 
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="2.1.13" />
+        <PackageReference Include="IronPython" Version="3.4.1" />
         <PackageReference Include="NetStone" Version="1.1.2" />
         <PackageReference Include="YamlDotNet" Version="15.3.0" />
         <Reference Include="Newtonsoft.Json">
